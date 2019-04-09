@@ -7,6 +7,7 @@
 
 import socket
 import ssl
+import sys
 
 
 # Establish a dedicated TLS context for secured connection
@@ -47,11 +48,25 @@ def connect(s_address, s_port, key_exchange):
         return tls_sock
 
 
+# Get key exchange mode from user input, either DHE or RSA
+def get_key_mode(arg_list):
+    # sys.argv should return 2 arguments:
+    # argv[0] contains the file name (TlsClient.py) and argv[1] contains key_mode
+    if len(arg_list) != 2:  # if expected arguments are not specified, throw index error
+        raise IndexError("Require 1 argument but %d were given. Only accept following argument: "
+                         "<key_exchange_mode> = DHE or RSA" % (len(arg_list)-1))
+    try:  # verify that key_mode is DHE or RSA, else throw value error
+        key_mode = str(arg_list[1]).upper()
+        if key_mode != "RSA" and key_mode != "DHE":  # throw value error if invalid key_mode
+            raise ValueError("key_exchange_mode must be either DHE or RSA, not %s." % arg_list[1])
+    except ValueError:
+        raise ValueError("key_exchange_mode must be either DHE or RSA, not %s." % arg_list[1])
+    else:
+        return key_mode  # return key_mode to TlsClient if error checks pass
+
 server_address, server_port = '127.0.0.1', 50001
 
-# key authentication: Diffie-Hellman Ephemeral or RSA, uncomment one
-key_exchange_mode = "DHE"
-# key_exchange_mode = "RSA"
+key_exchange_mode = get_key_mode(sys.argv)  # key exchange mode: input either DHE or RSA
 
 tls_socket = connect(server_address, server_port, key_exchange_mode)  # connect to server over dedicated socket
 
