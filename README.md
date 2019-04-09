@@ -41,7 +41,7 @@ Python 3:
 python3 TlsServer_p3.py
 ```
 
-Initialize client second. Input requires one argument <key_mode> corresponding to the key agreement mode: DHE or RSA.
+Initialize client second. Requires one argument, <key_mode>, corresponding to the key agreement mode: DHE or RSA.
 
 Python 2.7:
 ```bash
