@@ -26,7 +26,7 @@ No special installation steps are necessary.
 
 Ensure that all client files (TlsClient.py, client.pem, client.key) are stored in the same folder, and all server files (TlsServer.py, server.pem, server.key) are stored in the same folder. Client and server files can be saved to the same or a different directory.
 
-Scripts run in Python 2.7 or Python 3 (see initialization steps below) using the pre-installed *socket* and *ssl* modules.
+Scripts run in Python 2.7 or Python 3 (see initialization steps below) using the pre-installed *socket*, *ssl*, and *sys* modules.
 
 ## Running the simulation
 
@@ -41,15 +41,17 @@ Python 3:
 python3 TlsServer_p3.py
 ```
 
-Initialize client second. By default, client specifies DH ephemeral key exchange, however can be substituted with RSA by swapping comments in main line of code.
+Initialize client second. Input requires one argument <key_mode> corresponding to the key agreement mode: DHE or RSA.
 
 Python 2.7:
 ```bash
-python TlsClient.py
+python TlsClient.py DHE
+python TlsClient.py RSA
 ```
 Python 3:
 ```bash
-python3 TlsClient_p3.py
+python3 TlsClient_p3.py DHE
+python3 TlsClient_p3.py RSA
 ```
 
 Expected output at server:
@@ -57,7 +59,7 @@ Expected output at server:
 ```bash
 Server listening...
 Connection succeeded, attempting handshake...
-Handshake succeeded. Chosen cipher is <DHE-RSA-AES128-SHA256 OR AES128-SHA256>.
+Handshake succeeded. Chosen cipher is (DHE-RSA-AES128-SHA256 OR AES128-SHA256).
 Server receives: test_message
 ```
 
@@ -65,7 +67,7 @@ Expected output at client:
 
 ```bash
 Connection succeeded, attempting handshake...
-Handshake succeeded. Chosen cipher is <DHE-RSA-AES128-SHA256 OR AES128-SHA256>.
+Handshake succeeded. Chosen cipher is (DHE-RSA-AES128-SHA256 OR AES128-SHA256).
 Client sends: test_message
 ```
 
